@@ -16,3 +16,9 @@ done
 
 ../muscle -in mcrAgene.ref -out mcrAgene.align
 ../muscle -in hsp70gene.ref -out hsp70gene.align
+
+# builds HMM profile using hmmbuild
+
+../hmmer-3.2.1/bin/hmmbuild hsp70gene.hmm hsp70gene.align
+../hmmer-3.2.1/bin/hmmbuild mcrAgene.hmm mcrAgene.align
+
