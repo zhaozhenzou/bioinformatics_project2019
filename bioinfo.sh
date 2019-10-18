@@ -36,4 +36,5 @@ echo "$proteomeID	$mcrAcount	$hsp70count" >> summarytable.txt
 done
 
 # make candidate gene file
-cat summarytable.txt | grep -v "Proteome ID" | grep -v -w 0 | sort -k3 >> candidate.txt
+echo "Proteome ID	McrA    HSP70" >> candidate.txt
+cat summarytable.txt | grep -v "Proteome ID" | grep -v -w 0 | sort -r -k3 >> candidate.txt
