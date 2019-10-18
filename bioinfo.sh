@@ -22,13 +22,18 @@ done
 ../hmmer-3.2.1/bin/hmmbuild hsp70gene.hmm hsp70gene.align
 ../hmmer-3.2.1/bin/hmmbuild mcrAgene.hmm mcrAgene.align
 
+# make headings
+echo "Proteome ID	McrA	HSP70" >> summarytable.txt
+
 # use hmmsearch to search genome for markers
 
 for file in ./proteomes/*.fasta
 do
-echo $file >> resultsmcrA.txt
-../hmmer-3.2.1/bin/hmmsearch --tblout mcrAgene.match mcrAgene.hmm $file | grep ">>" | wc -l >> resultsmcrA.txt
-echo $file >> resultshsp70.txt
-../hmmer-3.2.1/bin/hmmsearch --tblout hsp70gene.match hsp70gene.hmm $file | grep ">>" | wc -l >> resultshsp70.txt
+proteomeID=$(echo $file | cut -d/ -f 3 | cut -d. -f 1)
+mcrAcount=$(../hmmer-3.2.1/bin/hmmsearch --tblout mcrAgene.match mcrAgene.hmm $file | grep ">>" | wc -l)
+hsp70count=$(../hmmer-3.2.1/bin/hmmsearch --tblout hsp70gene.match hsp70gene.hmm $file | grep ">>" | wc -l)
+echo "$proteomeID	$mcrAcount	$hsp70count" >> summarytable.txt
 done
 
+# make candidate gene file
+cat summarytable.txt | grep -v "Proteome ID" | grep -v -w 0 | sort -k3 >> candidate.txt
